@@ -1,13 +1,43 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(''); // 👈 New state to hold error messages
+  
+  const navigate = useNavigate(); // 👈 React Router's steering wheel
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Ready to send to backend:", { email, password });
+    setError(''); // Clear any old errors when they try again
+    
+    try {
+      const response = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // 1. Save the token to the browser's local memory!
+        localStorage.setItem('token', data.token);
+        
+        // 2. Redirect straight to the Home page!
+        navigate('/');
+      } else {
+        // If login fails, show the exact error from the backend on the screen
+        setError(data.message);
+      }
+
+    } catch (error) {
+      console.error("Network Error:", error);
+      setError("Failed to connect to the server.");
+    }
   };
 
   return (
@@ -18,8 +48,14 @@ const Login = () => {
         <p className="text-gray-500 mt-2">Sign in to Akiba-Link</p>
       </div>
 
+      {/* 🔴 Display the error message beautifully on the screen if it exists */}
+      {error && (
+        <div className="mb-6 p-3 bg-red-50 text-red-600 border border-red-200 rounded-lg text-sm text-center font-medium">
+          {error}
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="space-y-6">
-        
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
           <input 
@@ -50,7 +86,6 @@ const Login = () => {
         >
           Sign In
         </button>
-
       </form>
 
       <p className="mt-6 text-center text-sm text-gray-600">

@@ -2,15 +2,51 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Register = () => {
-  const [name, setName] = useState('');
+  // 1. State updated to match your exact MongoDB Schema
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault(); 
-    console.log("Ready to create account:", { name, email, password });
-  };
+    
+    try {
+      // 1. Send the data to your new backend route
+      const response = await fetch('http://localhost:3000/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // Package up the 4 pieces of state to send to MongoDB
+        body: JSON.stringify({ username, email, phoneNumber, password }),
+      });
 
+      // 2. Read the response from the server
+      const data = await response.json();
+
+      // 3. If it worked, celebrate!
+      if (response.ok) {
+        alert("Account created successfully! Welcome to Akiba-Link.");
+        console.log("Server Token:", data.token);
+        
+        // Clear the form out
+        setUsername('');
+        setEmail('');
+        setPhoneNumber('');
+        setPassword('');
+        
+        // (Later, we will automatically redirect them to the Login page here)
+      } else {
+        // If the server rejected it (like an email that already exists)
+        alert("Error: " + data.message);
+      }
+
+    } catch (error) {
+      console.error("Network Error:", error);
+      alert("Failed to connect to the server. Is the backend running?");
+    }
+  };
   return (
     <div className="max-w-md mx-auto mt-16 p-8 bg-white shadow-xl rounded-2xl border border-gray-100">
       
@@ -19,24 +55,24 @@ const Register = () => {
         <p className="text-gray-500 mt-2">Create an account to start sharing tools</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-5">
         
-        {/* Name Input */}
+        {/* Username Input */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
           <input 
             type="text" 
             required
             className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
-            placeholder="John Doe"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            placeholder="e.g. BuilderMike"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </div>
 
         {/* Email Input */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
           <input 
             type="email" 
             required
@@ -47,9 +83,22 @@ const Register = () => {
           />
         </div>
 
+        {/* Phone Number Input */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
+          <input 
+            type="tel" 
+            required
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-600 focus:border-transparent transition-all"
+            placeholder="07XX XXX XXX"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+          />
+        </div>
+
         {/* Password Input */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
           <input 
             type="password" 
             required
@@ -62,7 +111,7 @@ const Register = () => {
 
         <button 
           type="submit" 
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300 shadow-md"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 mt-2 rounded-lg transition-colors duration-300 shadow-md"
         >
           Create Account
         </button>
