@@ -27,6 +27,8 @@ const Login = () => {
         // 1. Save the token to the browser's local memory!
         localStorage.setItem('token', data.token);
         
+        localStorage.setItem('userId', data.user.id);
+        
         // 2. Redirect straight to the Home page!
         navigate('/');
       } else {

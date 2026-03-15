@@ -1,41 +1,29 @@
-// 1. Load environment variables
 require('dotenv').config();
-
-// 2. Import tools
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-// 3. Initialize Express
 const app = express();
 
-// 4. Middleware
-app.use(cors()); 
-app.use(express.json()); 
+// --- MIDDLEWARE ---
+app.use(express.json()); // Allows Express to read JSON from React
+app.use(cors()); // Allows your React app (port 5173) to talk to this server
 
-// 5. --- THE ROUTES ---
-const authRoutes = require('./routes/authRoutes');
-app.use('/api/auth', authRoutes); 
+// --- ROUTES ---
+// This tells the server to route any /api/auth requests to your authRoutes file
+app.use('/api/auth', require('./routes/authRoutes'));
 
-// 👇 The exact fix for your ReferenceError is right here 👇
-const toolsRoutes = require('./routes/toolsRoutes');
-app.use('/api/tools', toolsRoutes);
-// 👆 -------------------------------------------------- 👆
+app.use('/api/tools', require('./routes/toolsRoutes'));
+// --- DATABASE CONNECTION ---
+// 🛑 IMPORTANT: Put your actual MongoDB connection string inside these quotes!
+const MONGO_URI = 'mongodb://localhost:27017/'; 
 
-// 6. Connect to MongoDB
-const dbURI = process.env.MONGO_URI;
+mongoose.connect(MONGO_URI)
+    .then(() => console.log('✅ Connected to MongoDB successfully!'))
+    .catch((err) => console.error('❌ MongoDB connection failed:', err.message));
 
-mongoose.connect(dbURI)
-    .then(() => console.log("✅ Akiba-Link Database Connected!"))
-    .catch((err) => console.error("❌ Database Connection Failed:", err.message));
-
-// 7. Temporary Test Route
-app.get('/', (req, res) => {
-    res.send("Welcome to the Akiba-Link API!");
-});
-
-// 8. Start the Engine
+// --- START SERVER ---
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`🚀 Server is running on http://localhost:${PORT}`);
+    console.log(`🚀 Akiba-Link Backend running on port ${PORT}`);
 });

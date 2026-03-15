@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
     },
     neighborhood: { 
         type: String, 
-        default: 'Kahawa West' // Perfect default for your initial local launch
+        default: 'Kahawa West' 
     }
 }, { 
     timestamps: true 

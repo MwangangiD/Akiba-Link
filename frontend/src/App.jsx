@@ -1,22 +1,31 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import ProtectedRoute from './components/ProtectedRoute'; // 👈 NEW IMPORT
 
 function App() {
   return (
-    <BrowserRouter>
-      {/* Navbar sits outside the Routes so it stays on the screen on every page */}
+    <Router>
       <Navbar />
-      
-      {/* The Routes act as the changing screen */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        
+        {/* 🛡️ NEW: The Dashboard is now locked inside the ProtectedRoute! */}
+        <Route 
+          path="/dashboard" 
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } 
+        />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
 

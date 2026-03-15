@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 
 const toolSchema = new mongoose.Schema({
-    toolName: { 
+    name: { 
+        type: String, 
+        required: true,
+        trim: true 
+    },
+    description: { 
         type: String, 
         required: true 
     },
@@ -11,21 +16,21 @@ const toolSchema = new mongoose.Schema({
     },
     condition: { 
         type: String, 
-        default: 'Good' 
+        required: true 
     },
     isAvailable: { 
         type: Boolean, 
-        default: true 
+        default: true // Tools are available by default when first uploaded
     },
-    location: { 
-        type: String, 
-        required: true 
-    },
-    // The "Relationship" - This links the tool to the specific neighbor who listed it
+    // 🛑 The Magic Link: This connects the tool directly to the specific user who uploaded it!
     owner: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'User', 
         required: true 
+    },
+    neighborhood: { 
+        type: String, 
+        default: 'Kahawa West' // Automatically sets it to your local area
     }
 }, { 
     timestamps: true 

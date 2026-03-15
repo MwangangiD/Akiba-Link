@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require('./models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -67,6 +67,5 @@ const loginUser = async (req, res) => {
     }
 };
 
-// --- 3. EXPORT BOTH FUNCTIONS ---
-// This is the "bridge" that your authRoutes.js is trying to cross!
+
 module.exports = { registerUser, loginUser };
