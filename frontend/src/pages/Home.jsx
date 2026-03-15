@@ -13,7 +13,7 @@ const Home = () => {
   useEffect(() => {
     const fetchTools = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/tools');
+        const response = await fetch('https://akiba-link-1.onrender.com/api/tools');
         const data = await response.json();
         if (response.ok) {
           setTools(data);

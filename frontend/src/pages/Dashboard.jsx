@@ -17,7 +17,7 @@ const Dashboard = () => {
   const fetchMyTools = async () => {
     if (!userId) return;
     try {
-      const response = await fetch(`http://localhost:3000/api/tools/user/${userId}`);
+      const response = await fetch(`https://akiba-link-1.onrender.com/api/tools/user/${userId}`);
       const data = await response.json();
       if (response.ok) {
         setMyTools(data);
@@ -39,7 +39,7 @@ const Dashboard = () => {
     if (!userId) return alert("Please log in first!");
 
     try {
-      const response = await fetch('http://localhost:3000/api/tools', {
+      const response = await fetch('https://akiba-link-1.onrender.com/api/tools', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, description, category, condition, ownerId: userId }),
@@ -60,7 +60,7 @@ const Dashboard = () => {
   // 3. Handle toggling Availability
   const handleToggle = async (toolId) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/tools/${toolId}`, {
+      const response = await fetch(`https://akiba-link-1.onrender.com/api/tools/${toolId}`, {
         method: 'PUT',
       });
       if (response.ok) {
@@ -76,7 +76,7 @@ const Dashboard = () => {
     if (!window.confirm("Are you sure you want to delete this tool?")) return;
     
     try {
-      const response = await fetch(`http://localhost:3000/api/tools/${toolId}`, {
+      const response = await fetch(`https://akiba-link-1.onrender.com/api/tools/${toolId}`, {
         method: 'DELETE',
       });
       if (response.ok) {

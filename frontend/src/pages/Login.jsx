@@ -13,7 +13,7 @@ const Login = () => {
     setError(''); // Clear any old errors when they try again
     
     try {
-      const response = await fetch('http://localhost:3000/api/auth/login', {
+      const response = await fetch('https://akiba-link-1.onrender.com/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -28,7 +28,7 @@ const Login = () => {
         localStorage.setItem('token', data.token);
         
         localStorage.setItem('userId', data.user.id);
-        
+
         // 2. Redirect straight to the Home page!
         navigate('/');
       } else {
