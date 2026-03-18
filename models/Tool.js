@@ -18,6 +18,9 @@ const toolSchema = new mongoose.Schema({
         type: String, 
         required: true 
     },
+    images: [{
+        type: String // We will store the Cloudinary URLs here
+    }],
     isAvailable: { 
         type: Boolean, 
         default: true // Tools are available by default when first uploaded

@@ -17,16 +17,22 @@ router.get('/', async (req, res) => {
 
 // @route   POST /api/tools
 // @desc    Add a new tool
-router.post('/', async (req, res) => {
+const upload = require('../middleware/upload');
+
+router.post('/', upload.array('images', 5), async (req, res) => {
     try {
         const { name, description, category, condition, ownerId } = req.body;
+
+        // Extract Cloudinary URLs from uploaded files
+        const imageUrls = req.files ? req.files.map(file => file.path) : [];
 
         const newTool = new Tool({
             name,
             description,
             category,
             condition,
-            owner: ownerId
+            owner: ownerId,
+            images: imageUrls
         });
 
         await newTool.save();

@@ -122,6 +122,9 @@ const Home = () => {
                       <span className="flex items-center text-sm text-red-500 font-semibold"><span className="w-2 h-2 bg-red-500 rounded-full mr-2"></span>In Use</span>
                     )}
                   </div>
+                  {tool.images && tool.images.length > 0 && (
+                    <img src={tool.images[0]} alt={tool.name} className="w-full h-48 object-cover rounded-md mb-3 shadow-sm border border-gray-100" />
+                  )}
                   <h3 className="text-xl font-bold text-gray-900 mb-1">{tool.name}</h3>
                   <p className="text-gray-500 text-sm mb-4">Condition: {tool.condition}</p>
                   {tool.owner && tool.owner.neighborhood && (

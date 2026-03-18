@@ -6,6 +6,7 @@ const Dashboard = () => {
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('Power Tools');
   const [condition, setCondition] = useState('Good');
+  const [images, setImages] = useState(null); // 👈 NEW: State for tool images
   
   // Inventory State
   const [myTools, setMyTools] = useState([]);
@@ -38,17 +39,31 @@ const Dashboard = () => {
     e.preventDefault();
     if (!userId) return alert("Please log in first!");
 
+    const formData = new FormData();
+    formData.append('name', name);
+    formData.append('description', description);
+    formData.append('category', category);
+    formData.append('condition', condition);
+    formData.append('ownerId', userId);
+    
+    if (images) {
+      for (let i = 0; i < images.length; i++) {
+        formData.append('images', images[i]);
+      }
+    }
+
     try {
       const response = await fetch('https://akiba-link-1.onrender.com/api/tools', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, description, category, condition, ownerId: userId }),
+        // Note: Do NOT set Content-Type for FormData, the browser sets it with the boundary!
+        body: formData,
       });
 
       if (response.ok) {
         // Clear the form
         setName('');
         setDescription('');
+        setImages(null);
         // Immediately fetch the updated list so the new tool pops up on screen!
         fetchMyTools(); 
       }
@@ -120,6 +135,16 @@ const Dashboard = () => {
               <option>Fair</option>
             </select>
           </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Tool Images (Up to 5)</label>
+            <input 
+              type="file" 
+              multiple 
+              accept="image/*"
+              className="w-full px-3 py-2 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-blue-600 bg-white" 
+              onChange={(e) => setImages(e.target.files)} 
+            />
+          </div>
           <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-md mt-2">Upload Tool</button>
         </form>
       </div>
@@ -149,6 +174,9 @@ const Dashboard = () => {
                       ✕
                     </button>
                   </div>
+                  {tool.images && tool.images.length > 0 && (
+                    <img src={tool.images[0]} alt={tool.name} className="w-full h-40 object-cover rounded-lg mb-3 shadow-sm border border-gray-100" />
+                  )}
                   <h3 className="text-lg font-bold text-gray-900">{tool.name}</h3>
                   <p className="text-gray-500 text-sm mb-4">Condition: {tool.condition}</p>
                 </div>
