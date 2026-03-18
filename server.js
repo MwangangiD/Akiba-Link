@@ -16,7 +16,7 @@ app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/tools', require('./routes/toolsRoutes'));
 // --- DATABASE CONNECTION ---
 // 🛑 IMPORTANT: Put your actual MongoDB connection string inside these quotes!
-const MONGO_URI = 'mongodb://localhost:27017/'; 
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/'; 
 
 mongoose.connect(MONGO_URI)
     .then(() => console.log('✅ Connected to MongoDB successfully!'))
