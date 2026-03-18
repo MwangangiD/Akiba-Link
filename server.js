@@ -10,10 +10,13 @@ app.use(express.json()); // Allows Express to read JSON from React
 app.use(cors()); // Allows your React app (port 5173) to talk to this server
 
 // --- ROUTES ---
-// This tells the server to route any /api/auth requests to your authRoutes file
 app.use('/api/auth', require('./routes/authRoutes'));
-
 app.use('/api/tools', require('./routes/toolsRoutes'));
+
+// Add a welcome route so the user knows the server is alive
+app.get('/', (req, res) => {
+    res.send('Akiba-Link API is running! 🚀');
+});
 // --- DATABASE CONNECTION ---
 // 🛑 IMPORTANT: Put your actual MongoDB connection string inside these quotes!
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/'; 

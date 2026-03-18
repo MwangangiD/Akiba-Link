@@ -13,7 +13,7 @@ const Login = () => {
     setError(''); // Clear any old errors when they try again
     
     try {
-      const response = await fetch('https://akiba-link-1.onrender.com/api/auth/login', {
+      const response = await fetch('https://akiba-link-3.onrender.com/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

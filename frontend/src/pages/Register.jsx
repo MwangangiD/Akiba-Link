@@ -13,7 +13,7 @@ const Register = () => {
     
     try {
       // 1. Send the data to your new backend route
-      const response = await fetch('https://akiba-link-1.onrender.com/api/auth/register', {
+      const response = await fetch('https://akiba-link-3.onrender.com/api/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
