@@ -103,11 +103,19 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto mt-12 p-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div className="min-h-screen bg-[#f8fafc] py-12 relative overflow-hidden">
+      {/* Background Decor */}
+      <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-indigo-400/20 rounded-full blur-[100px] pointer-events-none"></div>
+      <div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-blue-400/20 rounded-full blur-[100px] pointer-events-none"></div>
+
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10">
       
       {/* LEFT COLUMN: Add Tool Form */}
-      <div className="md:col-span-1 bg-white shadow-lg rounded-2xl border border-gray-100 p-6 h-fit">
-        <h2 className="text-2xl font-extrabold text-gray-900 mb-6 border-b pb-2">Share a Tool</h2>
+      <div className="lg:col-span-4 h-fit sticky top-24">
+        <div className="glass p-8 rounded-3xl shadow-xl border border-white/50 animate-slide-up">
+          <h2 className="text-2xl font-extrabold text-gray-900 mb-6 flex items-center gap-2">
+            <span className="text-3xl">✨</span> Share a Tool
+          </h2>
         <form onSubmit={handleAddTool} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Tool Name</label>
@@ -141,59 +149,73 @@ const Dashboard = () => {
               type="file" 
               multiple 
               accept="image/*"
-              className="w-full px-3 py-2 rounded-lg border border-gray-300 outline-none focus:ring-2 focus:ring-blue-600 bg-white" 
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" 
               onChange={(e) => setImages(e.target.files)} 
             />
           </div>
-          <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-md mt-2">Upload Tool</button>
+          <button type="submit" className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:-translate-y-0.5 transition-all mt-4">
+            Upload to Tool Shed
+          </button>
         </form>
+        </div>
       </div>
 
       {/* RIGHT COLUMN: My Inventory */}
-      <div className="md:col-span-2">
-        <h2 className="text-3xl font-extrabold text-gray-900 mb-6">My Inventory</h2>
+      <div className="lg:col-span-8">
+        <div className="glass p-8 rounded-3xl shadow-xl border border-white/50 min-h-[500px]">
+          <h2 className="text-3xl font-extrabold text-gray-900 mb-8 tracking-tight">My Inventory</h2>
         
         {loading ? (
           <p className="text-gray-500">Loading your tools...</p>
         ) : myTools.length === 0 ? (
-          <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm text-center">
-            <p className="text-gray-600">You haven't uploaded any tools yet.</p>
+          <div className="bg-white/40 p-12 rounded-2xl border border-white border-dashed shadow-inner text-center animate-fade-in">
+            <div className="text-5xl mb-4">🪹</div>
+            <p className="text-xl font-bold text-gray-800">Your shed is empty!</p>
+            <p className="text-gray-500 mt-2">Upload your first tool using the form on the left to start building your community.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {myTools.map((tool) => (
-              <div key={tool._id} className="p-5 bg-white rounded-xl shadow-md border border-gray-100 flex flex-col justify-between">
-                <div>
-                  <div className="flex justify-between items-start mb-2">
-                    <span className="text-xs font-bold uppercase tracking-wider text-blue-600 bg-blue-100 px-2 py-1 rounded">{tool.category}</span>
+              <div key={tool._id} className="group bg-white rounded-2xl shadow-md border border-gray-100 flex flex-col justify-between overflow-hidden hover:shadow-xl hover:shadow-indigo-500/10 transition-all duration-300 hover:-translate-y-1">
+                
+                {/* Image Section */}
+                <div className="relative h-48 bg-gradient-to-tr from-gray-100 to-gray-200 overflow-hidden">
+                  {tool.images && tool.images.length > 0 ? (
+                    <img src={tool.images[0]} alt={tool.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center text-4xl">🛠️</div>
+                  )}
+                  <div className="absolute top-3 left-3 flex justify-between w-[calc(100%-24px)] items-start">
+                    <span className="text-xs font-bold uppercase tracking-wider text-white bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-full shadow-sm">{tool.category}</span>
                     <button 
                       onClick={() => handleDelete(tool._id)}
-                      className="text-red-400 hover:text-red-600 text-sm font-bold"
+                      className="bg-white/90 text-red-500 hover:text-white hover:bg-red-500 w-8 h-8 rounded-full flex items-center justify-center shadow-lg transition-colors"
                       title="Delete Tool"
                     >
                       ✕
                     </button>
                   </div>
-                  {tool.images && tool.images.length > 0 && (
-                    <img src={tool.images[0]} alt={tool.name} className="w-full h-40 object-cover rounded-lg mb-3 shadow-sm border border-gray-100" />
-                  )}
-                  <h3 className="text-lg font-bold text-gray-900">{tool.name}</h3>
-                  <p className="text-gray-500 text-sm mb-4">Condition: {tool.condition}</p>
                 </div>
-                
-                {/* Status Toggle Button */}
-                <button 
-                  onClick={() => handleToggle(tool._id)}
-                  className={`w-full py-2 rounded-lg font-bold transition-colors ${tool.isAvailable ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-red-100 text-red-700 hover:bg-red-200'}`}
-                >
-                  {tool.isAvailable ? 'Status: Available' : 'Status: In Use'}
-                </button>
+
+                <div className="p-5 flex-1 flex flex-col">
+                  <h3 className="text-xl font-extrabold text-gray-900 mb-1 truncate">{tool.name}</h3>
+                  <p className="text-gray-500 text-sm mb-4 font-medium flex-1">Condition: <span className="text-gray-800">{tool.condition}</span></p>
+                  
+                  {/* Status Toggle Button */}
+                  <button 
+                    onClick={() => handleToggle(tool._id)}
+                    className={`w-full py-2.5 mt-auto rounded-xl font-bold transition-all shadow-sm ${tool.isAvailable ? 'bg-green-50 text-green-700 hover:bg-green-100 border border-green-200' : 'bg-red-50 text-red-700 hover:bg-red-100 border border-red-200'}`}
+                  >
+                    {tool.isAvailable ? '✅ Status: Available' : '🔴 Status: In Use'}
+                  </button>
+                </div>
               </div>
             ))}
           </div>
         )}
       </div>
-
+      </div>
+      </div>
     </div>
   );
 };

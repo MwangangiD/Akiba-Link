@@ -53,12 +53,20 @@ const Register = () => {
     }
   };
   return (
-    <div className="max-w-md mx-auto mt-16 p-8 bg-white shadow-xl rounded-2xl border border-gray-100">
-      
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-extrabold text-gray-900">Join Akiba-Link</h2>
-        <p className="text-gray-500 mt-2">Create an account to start sharing tools</p>
-      </div>
+    <div className="min-h-[calc(100vh-80px)] bg-[#f8fafc] flex items-center justify-center relative overflow-hidden py-12 px-4">
+      {/* Background Decor */}
+      <div className="absolute top-[10%] right-[10%] w-[400px] h-[400px] bg-purple-400/20 rounded-full blur-[100px] pointer-events-none"></div>
+      <div className="absolute bottom-[10%] left-[10%] w-[300px] h-[300px] bg-blue-400/20 rounded-full blur-[100px] pointer-events-none"></div>
+
+      <div className="w-full max-w-md glass p-10 shadow-2xl rounded-3xl border border-white/60 relative z-10 animate-slide-up">
+        
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-indigo-100 text-indigo-600 mb-4 shadow-inner">
+            <span className="text-3xl">🚀</span>
+          </div>
+          <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">Join Akiba-Link</h2>
+          <p className="text-gray-500 mt-2 font-medium">Create an account to start sharing tools</p>
+        </div>
 
       {/* 🔴 Display Error Messages */}
       {errorMessage && (
@@ -129,18 +137,19 @@ const Register = () => {
         </div>
 
         <button 
-          type="submit" 
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 mt-2 rounded-lg transition-colors duration-300 shadow-md"
-        >
-          Create Account
-        </button>
+            type="submit" 
+            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3.5 px-4 mt-4 rounded-xl transition-all duration-300 shadow-lg shadow-indigo-500/30 hover:-translate-y-0.5"
+          >
+            Create Account
+          </button>
 
-      </form>
+        </form>
 
-      <p className="mt-6 text-center text-sm text-gray-600">
-        Already have an account? <Link to="/login" className="text-blue-600 hover:text-blue-800 font-semibold transition-colors">Sign in</Link>
-      </p>
+        <p className="mt-8 text-center text-sm text-gray-600 font-medium">
+          Already have an account? <Link to="/login" className="text-blue-600 hover:text-blue-800 font-bold transition-colors">Sign in</Link>
+        </p>
 
+      </div>
     </div>
   );
 };

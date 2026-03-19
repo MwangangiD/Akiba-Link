@@ -1,4 +1,4 @@
-const User = require('./models/User');
+const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -39,7 +39,7 @@ const loginUser = async (req, res) => {
 
         // Check if the user exists
         const user = await User.findOne({ email });
-        if (!user) {
+        if (!user || !user.password) {
             return res.status(400).json({ message: "Invalid email or password." });
         }
 

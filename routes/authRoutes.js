@@ -51,7 +51,8 @@ router.post('/register', async (req, res) => {
 
     } catch (error) {
         console.error("Registration Error:", error.message);
-        res.status(500).json({ message: 'Server error during registration.' });
+        // Expose the actual error message to help debug MongoDB Atlas issues on Render
+        res.status(500).json({ message: error.message || 'Server error during registration.' });
     }
 });
 
@@ -63,7 +64,8 @@ router.post('/login', async (req, res) => {
 
         // 1. Find the user by their email
         const user = await User.findOne({ email });
-        if (!user) {
+        // Also check if user.password exists to prevent bcrypt.compare from crashing!
+        if (!user || !user.password) {
             return res.status(400).json({ message: 'Invalid email or password.' });
         }
 
