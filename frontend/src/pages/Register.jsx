@@ -7,10 +7,17 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
+  
+  // 2. New state for displaying beautiful messages instead of popups
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault(); 
     
+    setErrorMessage('');
+    setSuccessMessage('');
+
     try {
       // 1. Send the data to your new backend route
       const response = await fetch('https://akiba-link-3.onrender.com/api/auth/register', {
@@ -27,8 +34,7 @@ const Register = () => {
 
       // 3. If it worked, celebrate!
       if (response.ok) {
-        alert("Account created successfully! Welcome to Akiba-Link.");
-        console.log("Server Token:", data.token);
+        setSuccessMessage("Account created successfully! You can now sign in.");
         
         // Clear the form out
         setUsername('');
@@ -36,15 +42,14 @@ const Register = () => {
         setPhoneNumber('');
         setPassword('');
         
-        // (Later, we will automatically redirect them to the Login page here)
       } else {
         // If the server rejected it (like an email that already exists)
-        alert("Error: " + data.message);
+        setErrorMessage(data.message);
       }
 
     } catch (error) {
       console.error("Network Error:", error);
-      alert("Failed to connect to the server. Is the backend running?");
+      setErrorMessage("Failed to connect to the server.");
     }
   };
   return (
@@ -54,6 +59,20 @@ const Register = () => {
         <h2 className="text-3xl font-extrabold text-gray-900">Join Akiba-Link</h2>
         <p className="text-gray-500 mt-2">Create an account to start sharing tools</p>
       </div>
+
+      {/* 🔴 Display Error Messages */}
+      {errorMessage && (
+        <div className="mb-6 p-3 bg-red-50 text-red-600 border border-red-200 rounded-lg text-sm text-center font-medium">
+          {errorMessage}
+        </div>
+      )}
+
+      {/* 🟢 Display Success Messages */}
+      {successMessage && (
+        <div className="mb-6 p-3 bg-green-50 text-green-700 border border-green-200 rounded-lg text-sm text-center font-medium">
+          {successMessage}
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="space-y-5">
         
