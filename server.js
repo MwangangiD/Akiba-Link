@@ -12,6 +12,7 @@ app.use(cors()); // Allows your React app (port 5173) to talk to this server
 // --- ROUTES ---
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/tools', require('./routes/toolsRoutes'));
+app.use('/api/bookings', require('./routes/bookingRoutes'));
 
 // Add a welcome route so the user knows the server is alive
 app.get('/', (req, res) => {

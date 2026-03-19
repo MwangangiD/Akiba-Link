@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import BookingModal from '../components/BookingModal';
 
 const Home = () => {
   const [tools, setTools] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [contactTool, setContactTool] = useState(null);
+  const [bookingTool, setBookingTool] = useState(null);
 
   // 👈 NEW: State for our Search Bar and Category Filter
   const [searchQuery, setSearchQuery] = useState('');
@@ -44,24 +45,12 @@ const Home = () => {
       <div className="absolute top-[20%] right-[-5%] w-[400px] h-[400px] bg-purple-400/20 rounded-full blur-[100px] pointer-events-none"></div>
 
       
-      {/* 📞 The Contact Modal Overlay */}
-      {contactTool && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center transform transition-all">
-            <div className="text-5xl mb-4">📞</div>
-            <h3 className="text-2xl font-extrabold text-gray-900 mb-2">Borrow {contactTool.name}</h3>
-            <p className="text-gray-600 mb-6">
-              Reach out to <span className="font-bold text-blue-600">{contactTool.owner?.username || "the owner"}</span> to arrange a pickup!
-            </p>
-            <div className="bg-blue-50 text-blue-800 text-2xl font-black py-4 px-6 rounded-xl mb-6 border border-blue-100 tracking-wider">
-              {contactTool.owner?.phoneNumber || "No number provided"}
-            </div>
-            <button onClick={() => setContactTool(null)} className="w-full bg-gray-900 text-white font-bold py-3 rounded-lg hover:bg-gray-800 transition-colors shadow-md">
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+      {/* 📅 The Booking Modal Overlay */}
+      <BookingModal 
+        tool={bookingTool} 
+        isOpen={!!bookingTool} 
+        onClose={() => setBookingTool(null)} 
+      />
 
       {/* 🌟 Hero Section */}
       <div className="w-full relative py-28 px-4 text-center mt-8">
@@ -180,7 +169,7 @@ const Home = () => {
                 {/* Action Button */}
                 <div className="p-4 pt-0">
                   <button 
-                    onClick={() => tool.isAvailable ? setContactTool(tool) : null}
+                    onClick={() => tool.isAvailable ? setBookingTool(tool) : null}
                     className={`w-full py-3.5 rounded-2xl font-bold transition-all ${tool.isAvailable ? 'bg-gray-900 text-white hover:bg-indigo-600 shadow-md hover:shadow-indigo-500/30' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}`}
                   >
                     {tool.isAvailable ? 'Request to Borrow' : 'Currently Unavailable'}
