@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import BookingModal from '../components/BookingModal';
+import ReviewModal from '../components/ReviewModal';
 
 const Home = () => {
   const [tools, setTools] = useState([]);
   const [loading, setLoading] = useState(true);
   const [bookingTool, setBookingTool] = useState(null);
+  const [reviewTool, setReviewTool] = useState(null); // 👈 NEW: State for our Review Modal
 
   // 👈 NEW: State for our Search Bar and Category Filter
   const [searchQuery, setSearchQuery] = useState('');
@@ -45,11 +47,19 @@ const Home = () => {
       <div className="absolute top-[20%] right-[-5%] w-[400px] h-[400px] bg-purple-400/20 rounded-full blur-[100px] pointer-events-none"></div>
 
       
+      
       {/* 📅 The Booking Modal Overlay */}
       <BookingModal 
         tool={bookingTool} 
         isOpen={!!bookingTool} 
         onClose={() => setBookingTool(null)} 
+      />
+
+      {/* ⭐ The Review Modal Overlay */}
+      <ReviewModal 
+        tool={reviewTool} 
+        isOpen={!!reviewTool} 
+        onClose={() => setReviewTool(null)} 
       />
 
       {/* 🌟 Hero Section */}
@@ -166,13 +176,20 @@ const Home = () => {
                   </div>
                 </div>
 
-                {/* Action Button */}
-                <div className="p-4 pt-0">
+                {/* Action Buttons */}
+                <div className="p-4 pt-0 flex gap-2">
+                  <button 
+                    onClick={() => setReviewTool(tool)}
+                    className="w-1/3 py-3.5 rounded-2xl font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 transition-all border border-gray-200 shadow-sm flex items-center justify-center gap-1"
+                    title="Read & Write Reviews"
+                  >
+                    ⭐ <span className="text-sm">{tool.rating > 0 ? `${tool.rating.toFixed(1)} (${tool.numReviews})` : 'New'}</span>
+                  </button>
                   <button 
                     onClick={() => tool.isAvailable ? setBookingTool(tool) : null}
-                    className={`w-full py-3.5 rounded-2xl font-bold transition-all ${tool.isAvailable ? 'bg-gray-900 text-white hover:bg-indigo-600 shadow-md hover:shadow-indigo-500/30' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}`}
+                    className={`w-2/3 py-3.5 rounded-2xl font-bold transition-all ${tool.isAvailable ? 'bg-gray-900 text-white hover:bg-indigo-600 shadow-md hover:shadow-indigo-500/30' : 'bg-gray-100 text-gray-400 cursor-not-allowed'}`}
                   >
-                    {tool.isAvailable ? 'Request to Borrow' : 'Currently Unavailable'}
+                    {tool.isAvailable ? 'Borrow' : 'Unavailable'}
                   </button>
                 </div>
               </div>

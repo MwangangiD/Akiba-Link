@@ -34,6 +34,15 @@ const toolSchema = new mongoose.Schema({
     neighborhood: { 
         type: String, 
         default: 'Kahawa West' // Automatically sets it to your local area
+    },
+    // 🌟 New Rating System Fields
+    rating: {
+        type: Number,
+        default: 0
+    },
+    numReviews: {
+        type: Number,
+        default: 0
     }
 }, { 
     timestamps: true 
