@@ -16,7 +16,7 @@ const Navbar = () => {
     <nav className="glass sticky top-0 z-50 px-6 py-4 flex justify-between items-center transition-all duration-300 border-b border-white/20">
       
       {/* The Logo always goes Home */}
-      <Link to="/" className="flex items-center hover:scale-105 transition-transform origin-left">
+      <Link to="/" className="flex items-center">
         <img 
           src="/logo.png" 
           alt="Akiba-Link Logo" 

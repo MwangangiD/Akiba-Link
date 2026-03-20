@@ -2,12 +2,12 @@ const express = require('express');
 const router = express.Router();
 const Message = require('../models/Message');
 const User = require('../models/User');
-const auth = require('../middleware/auth');
+const { protect } = require('../middleware/auth');
 
 // @desc    Get chat history directly with a specific user
 // @route   GET /api/messages/:otherUserId
 // @access  Private
-router.get('/:otherUserId', auth, async (req, res) => {
+router.get('/:otherUserId', protect, async (req, res) => {
     try {
         const messages = await Message.find({
             $or: [
@@ -32,7 +32,7 @@ router.get('/:otherUserId', auth, async (req, res) => {
 // @desc    Get all unique users the current user has chatted with
 // @route   GET /api/messages/conversations/list
 // @access  Private
-router.get('/conversations/list', auth, async (req, res) => {
+router.get('/conversations/list', protect, async (req, res) => {
     try {
         const userId = req.user.id;
         
