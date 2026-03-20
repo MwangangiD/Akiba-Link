@@ -16,19 +16,16 @@ const Navbar = () => {
     <nav className="glass sticky top-0 z-50 px-6 py-4 flex justify-between items-center transition-all duration-300 border-b border-white/20">
       
       {/* The Logo always goes Home */}
-      <Link to="/" className="text-2xl font-extrabold text-blue-900 tracking-tight flex items-center gap-2 hover:scale-105 transition-transform">
-        <div className="relative group flex items-center justify-center p-1 rounded-full bg-white shadow-sm ring-2 ring-blue-100 hover:ring-blue-300 transition-all">
-          <img 
-            src="/logo.png" 
-            alt="Akiba-Link Logo" 
-            className="w-10 h-10 object-contain rounded-full"
-            onError={(e) => {
-              e.target.onerror = null; 
-              e.target.src = "https://via.placeholder.com/150?text=AL";
-            }}
-          />
-        </div>
-        <span className="hidden sm:inline-block bg-clip-text text-transparent bg-gradient-to-r from-blue-900 to-indigo-800 tracking-tighter ml-1">Akiba-Link</span>
+      <Link to="/" className="flex items-center hover:scale-105 transition-transform origin-left">
+        <img 
+          src="/logo.png" 
+          alt="Akiba-Link Logo" 
+          className="h-12 w-auto object-contain drop-shadow-sm"
+          onError={(e) => {
+            e.target.onerror = null; 
+            e.target.src = "https://via.placeholder.com/200x50?text=Akiba-Link";
+          }}
+        />
       </Link>
       
       <div className="flex gap-4 md:gap-6 items-center">
