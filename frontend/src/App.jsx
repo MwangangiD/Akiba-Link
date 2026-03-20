@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute'; // 👈 NEW IMPORT
+import ChatOverlay from './components/ChatOverlay'; // 💬 Global Chat
 
 function App() {
   return (
@@ -25,6 +26,9 @@ function App() {
           } 
         />
       </Routes>
+      
+      {/* 💬 The Global Chat Overlay - Only active if token exists */}
+      <ChatOverlay />
     </Router>
   );
 }
